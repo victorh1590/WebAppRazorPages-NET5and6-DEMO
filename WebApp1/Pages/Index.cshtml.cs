@@ -19,4 +19,9 @@ public class IndexModel : PageModel
     {
         _url = Url.Page("Privacy");
     }
+
+    public void OnGetTest()
+    {
+        _url = "Test.";
+    }
 }
