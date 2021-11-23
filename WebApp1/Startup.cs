@@ -1,5 +1,8 @@
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,7 +19,22 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddRazorPages();
+        services.AddRazorPages()
+            .AddRazorPagesOptions(options =>
+            {
+                options.Conventions.Add(
+                    new PageRouteTransformerConvention(
+                        new KebabCaseParameterTransformer()));
+                options.Conventions.AddPageRoute("/Error", "/error");
+            });
+        
+        
+        services.Configure<RouteOptions>(options =>
+        {
+            options.AppendTrailingSlash = true;
+            options.LowercaseUrls = true;
+            options.LowercaseQueryStrings = true;
+        });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,5 +64,16 @@ public class Startup
         {
             endpoints.MapRazorPages();
         });
+    }
+}
+
+public class KebabCaseParameterTransformer : IOutboundParameterTransformer
+{
+    public string TransformOutbound(object value)
+    {
+        if (value == null) return null;
+        return Regex
+            .Replace(value.ToString(), "([a-z])([A-Z])", "$1-$2")
+            .ToLower();
     }
 }
