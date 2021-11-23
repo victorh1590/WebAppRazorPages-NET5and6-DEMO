@@ -13,8 +13,10 @@ public class IndexModel : PageModel
         _logger = logger;
     }
 
+    public string _url;
+
     public void OnGet()
     {
-
+        _url = Url.Page("Privacy");
     }
 }
