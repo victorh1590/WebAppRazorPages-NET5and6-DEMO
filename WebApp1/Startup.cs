@@ -33,6 +33,8 @@ public class Startup
             app.UseHsts();
         }
 
+        app.UseStatusCodePagesWithRedirects("/Error");
+        
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
