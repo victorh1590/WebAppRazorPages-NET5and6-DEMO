@@ -1,0 +1,44 @@
+﻿@page "{handler?}"
+@using System.Net.Mime
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Done</th>
+        </tr>
+        @foreach (var item in Model.Todos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @if (item.Done)
+                    {
+                        @:Done!
+                    }
+                    else
+                    {
+                        @:No.
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
